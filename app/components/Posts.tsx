@@ -1,6 +1,6 @@
-import getSortedPostsData from '@/lib/posts'
-
 import React from 'react'
+import getSortedPostsData from '@/lib/posts'
+import ListItem from './ListItem'
 
 export default function Post() {
     const posts = getSortedPostsData()
@@ -9,7 +9,7 @@ export default function Post() {
         <h2>Blog</h2>
         <ul>
             {posts.map((post) => (
-                JSON.stringify(post)
+                <ListItem key={post.id} post={post} />
             ))}
         </ul>
     </section>
