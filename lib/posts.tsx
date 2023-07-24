@@ -1,5 +1,4 @@
-
-
+import { compileMDX } from 'next-mdx-remote/rsc'
 
 
 type Filetree = {
@@ -9,7 +8,7 @@ type Filetree = {
 }
 
 
-export async function getPostsByName(fileName: string): Promise<BlogPost | undefined> {
+export async function getPostByName(fileName: string): Promise<BlogPost | undefined> {
     const res = await fetch(`https://raw.githubusercontent.com/nkped/repo-md-blogposts/main/${fileName}`, { headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
@@ -22,17 +21,16 @@ export async function getPostsByName(fileName: string): Promise<BlogPost | undef
 
     if (rawMDX === '404: Not Found') return undefined
 
-     
+    const { frontmatter, content } = await compileMDX<{
+        id: string, title: string, date: string, tags: string[],
+    }>({source: rawMDX})
 
+    const id = fileName.replace(/\.mdx$/, '')
 
+    const blogPostObj: BlogPost = { meta: { id, title: frontmatter.title, date: frontmatter.date, tags: frontmatter.tags }, content }
+
+    return blogPostObj
 }
-
-
-
-
-
-
-
 
 
 
@@ -52,7 +50,7 @@ export async function getPostsMeta(): Promise<Meta[] | undefined > {
     const posts: Meta[] = []
 
     for (const file of fileArray) {
-        const post = await getPostsByName(file)
+        const post = await getPostByName(file)
         if (post) {
             const { meta } = post
             posts.push(meta)

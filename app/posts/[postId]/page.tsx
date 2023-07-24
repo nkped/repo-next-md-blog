@@ -1,8 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import getSortedPostsData, { getPostData } from '@/lib/posts'
+import {getPostsMeta,  getPostByName } from '@/lib/posts'
 import getFormattedDate from '@/lib/getFormattedDate'
 import {notFound} from 'next/navigation'
+
+//act as ssr for dev purposes
+export const revalidate = 0
 
 type Props = {
     params: {
@@ -10,37 +13,67 @@ type Props = {
     }
 }
 
-export function generateStaticParams() {
-    const posts = getSortedPostsData()
+/* 
+While running: export const revalidate = 0, it is impossible to also run: generateStaticParams(), and so must be commented out
+
+export async function generateStaticParams() {
+    const posts = await getPostsMeta()
+
+    if (!posts) return []
 
     return posts.map((post) => ({
         postId: post.id
     }))
 }
+*/
+
+export async function generateMetadata({ params: { postId } }: Props) {
+
+    const post = await getPostByName(`${postId}.mdx`) //deduped!
+
+    if (!post) {
+        return {
+            title: 'Post Not Found'
+        }
+    }
+
+    return {
+        title: post.meta.title,
+    }
+}
 
 
 export default async function Post({params: { postId }}: Props) {
-    const posts = getSortedPostsData()
+    const post = await getPostByName(`${postId}.mdx`)
     
-    if (!posts.find((post) => post.id === postId)) {
-    return notFound()
-    }
+    if (!post) notFound()
+    
+    const { meta, content } = post
 
-    const { title, date, contentHtml } = await getPostData(postId)
+    const pubDate = getFormattedDate(meta.date)
 
-    const pubDate = getFormattedDate(date)
+    const tags = meta.tags.map((tag, i) => (
+        <Link key={i} href={`/tags/${tag}`} >{tag}</Link>
+    ))
 
   return (
-    <main>
-        <h1>{title}</h1>
-        <p>{pubDate}</p>
+    <>
+        <h2>{meta.title}</h2>
+        <p>
+            {pubDate}
+        </p>
         <article>
-            <section dangerouslySetInnerHTML={{ __html:contentHtml }} />
-            <p>
-                <Link href='/'>Back to home</Link>
-            </p>
+            {content}
         </article>
-    </main>
-
+        <section>
+            <h3>Related:</h3>
+            <div>
+                {tags}
+            </div>
+        </section>
+        <p>
+            <Link href="/">← Back to home</Link>
+        </p>
+    </>
   )
 }

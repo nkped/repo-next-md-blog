@@ -5,8 +5,7 @@ type Meta = {
     tags: string[],
 }
 
-
 type BlogPost = {
     meta: Meta,
-    content: any,
+    content: ReactElement<any, string | JSXElementConstructor<any>>,
 }

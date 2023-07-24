@@ -1,9 +1,12 @@
 import React from 'react'
-import getSortedPostsData from '@/lib/posts'
+import { getPostsMeta } from '@/lib/posts'
 import ListItem from './ListItem'
 
-export default function Post() {
-    const posts = getSortedPostsData()
+export default async function Post() {
+    const posts = await getPostsMeta()
+
+    if (!posts) return <p>Sorry, no posts available.</p>
+
   return (
     <section>
         <h2>Blog</h2>
