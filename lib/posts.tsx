@@ -23,7 +23,11 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
     const { frontmatter, content } = await compileMDX<{
         id: string, title: string, date: string, tags: string[],
-    }>({source: rawMDX})
+    }>({source: rawMDX, 
+        options: {
+            parseFrontmatter: true,
+        }
+    })
 
     const id = fileName.replace(/\.mdx$/, '')
 
@@ -35,7 +39,7 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
 
 export async function getPostsMeta(): Promise<Meta[] | undefined > {
-    const res = await fetch('https://github.com/repos/nkped/repo-md-blogposts/git/trees/main?recursive=1', { headers: {
+    const res = await fetch('https://api.github.com/repos/nkped/repo-md-blogposts/git/trees/main?recursive=1', { headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
