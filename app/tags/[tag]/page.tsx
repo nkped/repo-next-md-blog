@@ -31,7 +31,7 @@ export function generateMetadata({params: { tag }}: Props) {
 
 
 
-export async function TagPostList({params: { tag }}: Props) {
+export default async function TagPostList({params: { tag }}: Props) {
     const posts = await getPostsMeta()
 
     if (!posts) return <p>Sorry, no posts available..</p>
