@@ -45,7 +45,20 @@ export async function TagPostList({params: { tag }}: Props) {
                 <Link href='/' >Back home</Link>
             </div>
         )
-    } 
+    }
+
+    return (
+        <>
+            <h2>Results for: #{tag}</h2>
+            <section>
+                <ul>
+                    {tagPosts.map(post => (
+                        <ListItem key={post.id} post={post} />
+                    ))}
+                </ul>
+            </section>
+        </>
+    )
 }
 
 
