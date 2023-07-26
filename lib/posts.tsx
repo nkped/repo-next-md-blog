@@ -1,5 +1,7 @@
 import { compileMDX } from 'next-mdx-remote/rsc'
-
+import rehypeAutolinkHeadings from 'rehype-autolink-headings/lib'
+import rehypeHighlight from 'rehype-highlight/lib'
+import rehypeSlug from 'rehype-slug'
 
 type Filetree = {
     "tree": [
@@ -9,6 +11,7 @@ type Filetree = {
 
 
 export async function getPostByName(fileName: string): Promise<BlogPost | undefined> {
+
     const res = await fetch(`https://raw.githubusercontent.com/nkped/repo-md-blogposts/main/${fileName}`, { headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
@@ -26,6 +29,14 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
     }>({source: rawMDX, 
         options: {
             parseFrontmatter: true,
+            mdxOptions: {
+                rehypePlugins: [
+                    rehypeHighlight, 
+                    rehypeSlug,
+                    [rehypeAutolinkHeadings, 
+                    {behavior: 'wrap'}]
+                ]
+            }
         }
     })
 
