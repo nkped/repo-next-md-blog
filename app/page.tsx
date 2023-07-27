@@ -1,4 +1,4 @@
-import Post from "./components/Posts"
+import Posts from "./components/Posts"
 import MyProfilePic from './components/MyProfilePic'
 
 
@@ -10,8 +10,7 @@ export default function Home() {
     <div>
       <MyProfilePic />
       <h1>Velkommen 👋&nbsp; til min blog!</h1>
-{/* @ts-expect-error Server Component */}
-      <Post />
+      <Posts />
     </div>
   )
 }
