@@ -16,3 +16,13 @@ const nextConfig = {
   }
   
   module.exports = nextConfig
+
+/* 
+Include following when using images from remote sources:
+NB ** at end of pathname reads any pathname
+
+  images: {
+    remotePatterns: [ literal config ]
+      
+      
+      */

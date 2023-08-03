@@ -6,7 +6,6 @@ type Props = {
     priority?: string
 }
 
-
 export default function CustomImage({ src, alt, priority }: Props) {
 
     const prty = priority ? true : false
@@ -25,3 +24,10 @@ export default function CustomImage({ src, alt, priority }: Props) {
     )
 
 }
+
+
+/* NB!!
+- priority is set to true when image should load 'above the fold', meaning instantly
+- width={650} and height={650} are merely suggestive to nextjs and to be regarded mostly as max-values
+- sharp-dependency is for images
+ */

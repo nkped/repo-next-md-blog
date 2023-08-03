@@ -3,6 +3,7 @@ type Props = {
     id: string
 }
 
+//aspect-classNames are from @tailwindcss/aspect-ratio dev-dependency
 
 export default function Video({ id }: Props) {
     return (
