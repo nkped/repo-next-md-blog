@@ -3,10 +3,12 @@ import Link from 'next/link'
 import {getPostsMeta,  getPostByName } from '@/lib/posts'
 import getFormattedDate from '@/lib/getFormattedDate'
 import {notFound} from 'next/navigation'
+//NB Find below styles in nodemodules-folder->higlight->styles ''
 import 'highlight.js/styles/github-dark.css'
 
+
 //act as ssr for dev purposes
-export const revalidate = 10
+export const revalidate = 0
 
 type Props = {
     params: {
@@ -15,18 +17,21 @@ type Props = {
 }
 
 /* 
-While running: export const revalidate = 0, it is impossible to also run: generateStaticParams(), and so must be commented out
-*/
+- While running: export const revalidate = 0, it is impossible to also run: generateStaticParams(), and so must be commented out during dev-mode.
+- generateStaticParams() only runs at build time to create statically generated (SSG) post-pages.
+- when uncommenting generateStaticParams() {, also consider changing 'export const revalidate = 0 above'..
+
 
 export async function generateStaticParams() {
     const posts = await getPostsMeta()
-
+    
     if (!posts) return []
-
+    
     return posts.map((post) => ({
         postId: post.id
     }))
 }
+*/
 
 export async function generateMetadata({ params: { postId } }: Props) {
 

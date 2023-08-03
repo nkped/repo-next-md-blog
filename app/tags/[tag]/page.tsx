@@ -3,7 +3,7 @@ import ListItem from "@/app/components/ListItem";
 import Link from "next/link";
 
 
-export const revalidate = 10
+export const revalidate = 0
 
 type Props = {
     params: {
@@ -11,7 +11,7 @@ type Props = {
     }
 }
 
-
+/* 
 export async function generateStaticParams() {
     const posts = await getPostsMeta()
 
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
     return Array.from(tags).map((tag) => ({tag}))
 }
-
+ */
 
 
 export function generateMetadata({params: { tag }}: Props) {

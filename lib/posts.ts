@@ -12,6 +12,13 @@ type Filetree = {
 }
 
 
+/* getPostByName() recieves REFs (filenames) from getPostsMeta() and fetches files from Github raw-API, and returns BlogPost-objs containing meta-objs
+
+-  
+
+
+*/
+
 export async function getPostByName(fileName: string): Promise<BlogPost | undefined> {
 
     const res = await fetch(`https://raw.githubusercontent.com/nkped/repo-md-blogposts/main/${fileName}`, { headers: {
@@ -54,6 +61,17 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 }
 
 
+/*
+getPostsMeta() - fetch's file-paths from repos-API, use theese to call function that ultimately returns meta-data, and finally return date-sorted (blog)posts-array of meta-obj's
+
+Steps:
+- fetch REF's (paths) for blogpost-files from github-repo
+- filter mdx-files
+- use REF's to call getPostByname()
+- recieve Blogpost-array from getPostByName
+- destructure meta-obj from Blogposts (posts)
+- return (blog)posts-array of meta-obj's sorted by date
+*/
 
 export async function getPostsMeta(): Promise<Meta[] | undefined > {
     const res = await fetch('https://api.github.com/repos/nkped/repo-md-blogposts/git/trees/main?recursive=1', { headers: {
