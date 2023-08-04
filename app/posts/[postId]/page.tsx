@@ -8,7 +8,7 @@ import 'highlight.js/styles/github-dark.css'
 
 
 //act as ssr for dev purposes
-export const revalidate = 0
+export const revalidate = 86400
 
 type Props = {
     params: {
@@ -20,7 +20,7 @@ type Props = {
 - While running: export const revalidate = 0, it is impossible to also run: generateStaticParams(), and so must be commented out during dev-mode.
 - generateStaticParams() only runs at build time to create statically generated (SSG) post-pages.
 - when uncommenting generateStaticParams() {, also consider changing 'export const revalidate = 0 above'..
-
+*/
 
 export async function generateStaticParams() {
     const posts = await getPostsMeta()
@@ -31,7 +31,6 @@ export async function generateStaticParams() {
         postId: post.id
     }))
 }
-*/
 
 export async function generateMetadata({ params: { postId } }: Props) {
 
