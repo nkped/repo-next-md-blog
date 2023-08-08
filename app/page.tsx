@@ -1,9 +1,9 @@
 import Posts from "./components/Posts"
 import MyProfilePic from './components/MyProfilePic'
 
-
+/* 
 export const revalidate = 86400
-
+ */
 
 export default function Home() {
   return (
