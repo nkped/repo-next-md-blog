@@ -21,7 +21,7 @@ type Filetree = {
 
 export async function getPostByName(fileName: string): Promise<BlogPost | undefined> {
 
-    const res = await fetch(`https://raw.githubusercontent.com/nkped/repo-md-blogposts/main/${fileName}`, { headers: {
+    const res = await fetch(`https://raw.githubusercontent.com/nkped/mdx-blogpost/main/${fileName}`, { headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
@@ -74,7 +74,7 @@ Steps:
 */
 
 export async function getPostsMeta(): Promise<Meta[] | undefined > {
-    const res = await fetch('https://api.github.com/repos/nkped/repo-md-blogposts/git/trees/main?recursive=1', { headers: {
+    const res = await fetch('https://api.github.com/repos/nkped/mdx-blogpost/git/trees/main?recursive=1', { headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
